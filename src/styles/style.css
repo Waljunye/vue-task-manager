@@ -6,11 +6,15 @@
 .item {
     margin: 10px 0;
 }
-.fade-enter-active, .fade-leave-active{
-    transition: opacity .5s ease-in;
+.fade-leave-active{
+    transition: opacity .5s ease-in, transform .5s ease-in;
+}
+.fade-enter-active{
+    transition: opacity .7s ease-in, transform .7s ease-in-out;
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
     opacity: 0;
+    transform: rotate(0.4turn) scale(2);
 }
 .done {
     text-decoration: line-through;

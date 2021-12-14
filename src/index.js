@@ -8,7 +8,7 @@ Vue.component('todo-list', {
         }
     },
     template:
-        '<div>' +
+        '<form onsubmit="return false;">' +
             '<div v-if="!count()"> Ты выплонил все задачи!</div>' +
             '<div v-else-if="count() == 1"> Почти получилось, продолжай в том же духе</div>' +
             '<div v-else-if="count() == 2"> У тебя ещё есть над чем работать. Продолжай!</div>' +
@@ -21,10 +21,10 @@ Vue.component('todo-list', {
             '    </div>' +
             '<div class="form">\n' +
             '        <input :placeholder="placeholder" :title="message" v-model="this.tasksInput">\n' +
-            '        <button type="button" v-on:click="this.addTask">Добавить</button>\n' +
+            '        <button type="submit" v-on:click="this.addTask">Добавить</button>\n' +
             '    </div>' +
             '<transition name="fade"><img :src="this.img" alt="Robert Downey Jr congrats you" v-show="count() == 0"> </transition>' +
-        '</div>',
+        '</form>',
     methods: {
         addTask: function(){
             this.tasks.push({content: tasksInput, disabled: false})
