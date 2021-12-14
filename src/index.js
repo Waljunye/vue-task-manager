@@ -1,50 +1,46 @@
 Vue.component('todo-list', {
-    props: ['tasks', 'inputPlaceholder', 'inputMessage'],
+    props: ['placeholder', 'tasks', 'message'],
     data: function(){
         return {
             tasksInput: "",
-            tasksCont: this.tasks.length,
+            completed: false,
+            img: "/src/img/61569c9b6f025f1bae21bc242c27e321.jpg"
         }
     },
     template:
         '<div>' +
-            '<div>Осталось сделать задач: <span class="counter">{{ this.tasksCont }}</span></div>'+
+            '<div v-if="!count()"> Ты выплонил все задачи!</div>' +
+            '<div v-else-if="count() == 1"> Почти получилось, продолжай в том же духе</div>' +
+            '<div v-else-if="count() == 2"> У тебя ещё есть над чем работать. Продолжай!</div>' +
+            '<div v-else>Осталось сделать задач: <span class="counter">{{ count() }}</span></div>'+
             '<div class="list">\n' +
             '        <div class="item" v-for="task in tasks">\n' +
-            '            <input type="checkbox" :disabled="task.disabled" @click="completeTask(task)">\n' +
-            '            {{ task.content}}\n' +
+            '            <input type="checkbox" :disabled="task.disabled" v-model="task.completed">\n' +
+            '            <span :class="{done: task.completed}">{{ task.content}}\n</span>' +
             '        </div>\n' +
             '    </div>' +
             '<div class="form">\n' +
-            '        <input :placeholder="inputPlaceholder" :title="inputMessage" v-model="this.tasksInput">\n' +
+            '        <input :placeholder="placeholder" :title="message" v-model="this.tasksInput">\n' +
             '        <button type="button" v-on:click="this.addTask">Добавить</button>\n' +
             '    </div>' +
+            '<transition name="fade"><img :src="this.img" alt="Robert Downey Jr congrats you" v-show="count() == 0"> </transition>' +
         '</div>',
     methods: {
         addTask: function(){
             this.tasks.push({content: tasksInput, disabled: false})
-            this.tasksCont++;
         },
-        completeTask: function (task){
-            console.log(task.completed)
-            if(task.completed){
-                this.tasksCont++;
-            }else{
-                this.tasksCont--;
-            }
-            task.completed = !task.completed;
-
+        count: function (){
+            return this.tasks.filter(task => !task.completed).length;
         }
     }
     },
 )
 
-var vm = new Vue({
+let vm = new Vue({
     el: '#app',
     data: {
         inputPlaceholder: 'Имя задания!',
-        message: "Введите имя задания",
-        taskButtonType: 'checkbox',
+        message: 'Здесь должно быть имя задания, которое ты должен будешь выполнить',
         tasks: [{content: 'Развернуть окружение в Codepen', disabled: false, completed: false},
             {content: 'Сделать что-то', disabled: false, completed: false},
             {content: 'Сделать интернет-магазин на Vue', disabled: false, completed: false}]
