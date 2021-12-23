@@ -9,9 +9,27 @@
 </head>
 <body>
 <div id="app">
-    <h1>Список задач</h1>
-    <todo-list :tasks="tasks" :placeholder="inputPlaceholder" :message="message"></todo-list>
+    <h1>Список задач <like-button v-model="headerLikes"></like-button> <dislike-button v-model="headerDislikes"></dislike-button></h1>
+    <h2>Количество лайков - {{countLikes}}</h2>
+    <h2>Количество дизлайков - {{countDislikes}}</h2>
+    <div v-if="getUncompletedTasksCount === 0">Красава!</div>
+    <div v-else-if="getUncompletedTasksCount === 1">Eще чуть-чуть</div>
+    <div v-else>Осталось сделать задач: <span class="counter">{{getUncompletedTasksCount}}</span></div>
 
+    <task-list :tasks="uncompletedTasks" title="Незавершенные задачи"></task-list>
+
+    <div class="form">
+        <input v-model="this.tasksInput" :placeholder="inputPlaceholder">
+        <button type="button" @click="addTask">Добавить</button>
+        <like-button v-model="inputLikes"></like-button>
+        <dislike-button v-model="inputDislikes"></dislike-button>
+    </div>
+
+    <task-list :tasks="completedTasks" title="Завершенные задачи"></task-list>
+
+    <transition name="fade">
+        <img :src="this.img" alt="Robert Downey Jr congrats you" v-show="getUncompletedTasksCount === 0">
+    </transition>
 </div>
 <script src="src/index.js"></script>
 </body>
